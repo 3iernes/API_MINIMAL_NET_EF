@@ -1,8 +1,11 @@
 using API_ESP_GW;
 using API_ESP_GW.Clas;
+using API_ESP_GW.Clas.Requests;
+using API_ESP_GW.Clas.Responses;
 using API_ESP_GW.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -27,32 +30,36 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 
-app.MapPut("/codigo-barra",async (HttpContext httpContext,DataBase dbContext,double cb) =>
+app.MapPut("/codigo-barra", async (DataBase dbContext, CodBarraRequest reqBody) =>
 {
-    var reqToken = httpContext.Request.Headers["Authorization"];
 
-    if (string.IsNullOrWhiteSpace(reqToken.ToString()) || 
-        !reqToken.ToString().StartsWith("Bearer ") || !reqToken.Equals(reqToken))
+    if (string.IsNullOrWhiteSpace(reqBody.Token) || !reqBody.Token.Equals(token))
     {
-        return Results.BadRequest(new ScanResponse() { Creado = false,Encontrado = false,Error = true});
+        return Results.BadRequest(new ScanResponse()
+        {
+            Creado = false,
+            Encontrado = false,
+            Error = true,
+            Mensaje = "Error en el token"
+        });
     }
-        
 
-    var findCB = await dbContext.BarCodes.FirstOrDefaultAsync(bc => bc.CodeNumbers == cb);
+
+    var findCB = await dbContext.BarCodes.FirstOrDefaultAsync(bc => bc.CodeNumbers == reqBody.CB);
 
     if (findCB == null)
     {
-        var barcode = new BarCode(){ CodeNumbers = cb };
+        var barcode = new BarCode() { CodeNumbers = reqBody.CB };
         await dbContext.BarCodes.AddAsync(barcode);
         await dbContext.SaveChangesAsync();
-        return Results.Ok(new ScanResponse() { Creado=true,Encontrado = false, Error = false}) ;
+        return Results.Ok(new ScanResponse() { Creado = true, Encontrado = false, Error = false });
     }
     else
     {
         return Results.Ok(new ScanResponse() { Creado = false, Encontrado = true, Error = false });
     }
 })
-.WithName("GetWeatherForecast")
+.WithName("LecturaCodBarra")
 .WithOpenApi();
 
 app.Run();

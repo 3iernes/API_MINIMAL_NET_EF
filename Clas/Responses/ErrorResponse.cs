@@ -1,4 +1,4 @@
-﻿namespace API_ESP_GW.Clas
+﻿namespace API_ESP_GW.Clas.Responses
 {
     public class ErrorResponse
     {
