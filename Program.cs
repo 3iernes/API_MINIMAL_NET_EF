@@ -75,7 +75,9 @@ app.MapPut("/codigo-barra", async (DataBase dbContext, CodBarraRequest reqBody) 
     }
     else
     {
+        //Muevo en 1 la pos o la vuelvo a 0
         findCB.Pos = findCB.Pos == 5 ? 0 : findCB.Pos + 1;
+        await dbContext.SaveChangesAsync();
         //Sino, aviso que lo encontre, por lo tanto no lo creo
         return Results.Ok(new ScanResponse() { 
             Creado = false,
