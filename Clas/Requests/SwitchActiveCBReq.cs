@@ -2,7 +2,7 @@
 {
     public class SwitchActiveCBReq
     {
-        public required double CB { get; set; }
+        public required string CB { get; set; }
         public required string Token { get; set; }
     }
 }

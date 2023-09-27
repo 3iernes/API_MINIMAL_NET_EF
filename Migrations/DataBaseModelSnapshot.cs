@@ -32,8 +32,9 @@ namespace API_ESP_GW.Migrations
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
 
-                    b.Property<double>("CodeNumbers")
-                        .HasColumnType("float");
+                    b.Property<string>("CodeNumbers")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Pos")
                         .ValueGeneratedOnAdd()

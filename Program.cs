@@ -47,7 +47,7 @@ app.MapPut("/codigo-barra", async (DataBase dbContext, CodBarraRequest reqBody) 
     }
 
     //Valido que no se ingrese el CB cero
-    if (reqBody.CB == 0)
+    if (reqBody.CB.Equals("0"))
         return Results.BadRequest(new ScanResponse()
         {
             Creado = false,
@@ -106,7 +106,7 @@ app.MapPost("/codigo-barra", async (DataBase dbContext, CodBarraRequest reqBody)
     }
 
     //Valido que no se ingrese el CB cero
-    if (reqBody.CB == 0)
+    if (reqBody.CB.Equals("0"))
         return Results.BadRequest(new SwitchActiveRes()
         {
             Encontrado = false,
@@ -150,7 +150,7 @@ app.MapPost("/codigo-barra", async (DataBase dbContext, CodBarraRequest reqBody)
 
 app.MapGet("/codigo-barra/{codbarra}",async(DataBase dbContext, HttpRequest req) =>
 {
-    double codbarra = Convert.ToDouble(req.RouteValues["codbarra"]);
+    var codbarra = req.RouteValues["codbarra"];
     var stepsCodBarra = await dbContext.BarCodes.FirstOrDefaultAsync(bc =>
         bc.CodeNumbers == codbarra);
     return stepsCodBarra;

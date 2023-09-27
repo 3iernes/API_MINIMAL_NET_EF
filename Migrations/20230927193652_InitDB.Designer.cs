@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API_ESP_GW.Migrations
 {
     [DbContext(typeof(DataBase))]
-    [Migration("20230927143109_PosParaStepper")]
-    partial class PosParaStepper
+    [Migration("20230927193652_InitDB")]
+    partial class InitDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,8 +32,12 @@ namespace API_ESP_GW.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<double>("CodeNumbers")
-                        .HasColumnType("float");
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("CodeNumbers")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Pos")
                         .ValueGeneratedOnAdd()
