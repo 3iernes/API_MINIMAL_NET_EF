@@ -56,6 +56,7 @@ app.MapPut("/codigo-barra", async (DataBase dbContext, CodBarraRequest reqBody) 
     }
     else
     {
+        findCB.Pos = findCB.Pos == 5 ? 0 : findCB.Pos + 1;
         return Results.Ok(new ScanResponse() { Creado = false, Encontrado = true, Error = false });
     }
 })

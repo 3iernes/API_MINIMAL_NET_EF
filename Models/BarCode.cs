@@ -4,5 +4,6 @@
     {
         public int Id { get; set; }
         public required double CodeNumbers { get; set; }
+        public int Pos { get; set; }
     }
 }
