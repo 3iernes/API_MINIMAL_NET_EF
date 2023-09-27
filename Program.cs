@@ -3,6 +3,7 @@ using API_ESP_GW.Clas;
 using API_ESP_GW.Clas.Requests;
 using API_ESP_GW.Clas.Responses;
 using API_ESP_GW.Models;
+using Azure.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
@@ -145,6 +146,24 @@ app.MapPost("/codigo-barra", async (DataBase dbContext, CodBarraRequest reqBody)
     }
 })
 .WithName("SwitchActiveCodBarra")
+.WithOpenApi();
+
+app.MapGet("/codigo-barra/{codbarra}",async(DataBase dbContext, HttpRequest req) =>
+{
+    double codbarra = Convert.ToDouble(req.RouteValues["codbarra"]);
+    var stepsCodBarra = await dbContext.BarCodes.FirstOrDefaultAsync(bc =>
+        bc.CodeNumbers == codbarra);
+    return stepsCodBarra;
+})
+.WithName("GetBarCode")
+.WithOpenApi();
+
+app.MapGet("/codigo-barra", async (DataBase dbContext) =>
+{
+    var barCodes = await dbContext.BarCodes.ToListAsync();
+    return barCodes;
+})
+.WithName("GetBarCodes")
 .WithOpenApi();
 
 app.Run();
