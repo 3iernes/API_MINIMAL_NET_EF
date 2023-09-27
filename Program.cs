@@ -75,10 +75,7 @@ app.MapPut("/codigo-barra", async (DataBase dbContext, CodBarraRequest reqBody) 
     }
     else
     {
-<<<<<<< HEAD
         findCB.Pos = findCB.Pos == 5 ? 0 : findCB.Pos + 1;
-        return Results.Ok(new ScanResponse() { Creado = false, Encontrado = true, Error = false });
-=======
         //Sino, aviso que lo encontre, por lo tanto no lo creo
         return Results.Ok(new ScanResponse() { 
             Creado = false,
@@ -86,7 +83,6 @@ app.MapPut("/codigo-barra", async (DataBase dbContext, CodBarraRequest reqBody) 
             Activo = findCB.Active,
             Error = false 
         });
->>>>>>> e496e76b77de8530046dc7aae3e1820dec719ff5
     }
 })
 .WithName("LecturaCodBarra")
